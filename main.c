@@ -4,6 +4,23 @@
 #include <string.h>
 #define ARCHIEXTRA_H_INCLUDED
 
+typedef struct
+{
+    int idPelicula;
+    char nombrePelicula[30];
+    char director[20];
+    char genero[20];
+    char pais[20];
+    int anio;
+    int valoracion;
+    int pm; // (0- si es ATP / 13: mayor de trece /16: mayor de 16 / 18: mayor de 18
+    int eliminado; // indica 1 o 0 si la película fue eliminada
+
+} stPelicula;
+
+//const int LIMITE = 100;
+
+
 ///funcion MAIN:
 int main()
 {
@@ -16,18 +33,18 @@ void menuDePeliculas()
 {
     int opcion;
 
-    stPelicula arrPelis[LIMITE];
+    stPelicula arrPelis[100];
     int validos = 0;
 
     do
     {
 
         printf("\n\nBIENVENIDO!\n");
-        printf("1 - Funcion de carga de peliculas (alta)\n");
-        printf("2 - \n");
-        printf("3 - \n");
-        printf("4 - \n");
-        printf("5 - \n");
+        printf("1 - ALTA.\n");
+        printf("2 - BAJA.\n");
+        printf("3 - MODIFICACION.\n");
+        printf("4 - CONSULTA.\n");
+        printf("5 - LISTADOS.\n");
 
         printf("\nOpcion: ");
         scanf("%d", &opcion);
@@ -36,9 +53,13 @@ void menuDePeliculas()
         {
         case 1:
         {
-            validos = cargaPelicula ( arrPelis , validos);
+            FILE* archivo = fopen ("archivoPelicula", "rb");
+
+            validos = cargaPelicula (archivo, arrPelis , validos);
 
             printf("\nPeliculas cargadas: %d \n", validos);
+
+            fclose(archivo);
         }
         break;
 

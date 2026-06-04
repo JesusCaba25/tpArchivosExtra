@@ -19,7 +19,8 @@ typedef struct
 
 } stPelicula;
 
-const int LIMITE = 100;
+///onst int LIMITE = 100;
+///const int DIM_PAL = 30;
 
 ///Prototipados de las funciones:
 int main();
@@ -32,6 +33,7 @@ void mostrarPelisCargadas(stPelicula arrPeli[], int validos);
 
 void mostrarUnaPelicula (stPelicula p);
 
+int verificarSiExiste (char nombreArchivoActual[], char nombreBuscado[30]);
 
 
 #endif // ARCHIEXTRA_H_INCLUDED

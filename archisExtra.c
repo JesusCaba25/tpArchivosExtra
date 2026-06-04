@@ -3,13 +3,59 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct
+{
+    int idPelicula;
+    char nombrePelicula[30];
+    char director[20];
+    char genero[20];
+    char pais[20];
+    int anio;
+    int valoracion;
+    int pm; // (0- si es ATP / 13: mayor de trece /16: mayor de 16 / 18: mayor de 18
+    int eliminado; // indica 1 o 0 si la película fue eliminada
+
+} stPelicula;
+
+//const int LIMITE = 100;
+//const int DIM_PAL = 30;
+
+
 ///Funcion de carga (alta):
+
+int verificarSiExiste (char nombreArchivoActual[], char nombreBuscado[30])
+{
+    FILE* archivo = fopen ("archivoPelicula", "rb");
+    int respuesta = 0;
+    int i = 0;
+    stPelicula aux;
+
+    if(archivo != NULL)
+    {
+        while (fread(&aux, sizeof(stPelicula), 1, archivo) > 0)
+        {
+            if (strcmp (nombreArchivoActual, nombreBuscado) == 0)
+            {
+                respuesta = 1;
+            }
+        }
+        fclose(archivo);
+    }
+    else
+    {
+        printf("No existe el archivo.");
+    }
+
+    return respuesta;
+}
+
 int cargaPelicula (stPelicula arr[], int validos)
 {
     int i = validos;
     char control = 's';
+    int rta = 0;
 
-    FILE* archivo = fopen ("archivoPelicula", "ab"); ///agrega datos al final asi ("ab")
+    FILE* archivo = fopen ("archivoPelicula", "wb"); ///agrega datos al final asi ("ab")
 
     if (archivo != NULL)
     {
@@ -24,6 +70,25 @@ int cargaPelicula (stPelicula arr[], int validos)
 
             printf("\nIngrese el nombre de la PELICULA: ");
             gets (arr[i].nombrePelicula);
+
+            rta = verificarSiExiste (archivo, arr[i].nombrePelicula );
+
+            while (rta != 0)
+            {
+                if (rta == 1)
+                {
+                    printf("\nLa pelicula ya existe. Por favor, intente otra vez: \n");
+
+                    printf("\nIngrese el nombre de la PELICULA: ");
+                    gets (arr[i].nombrePelicula);
+
+                    rta = verificarSiExiste (archivo, arr[i].nombrePelicula );
+                }
+                else
+                {
+                    ///seguir...
+                }
+            }
 
             printf("\nIngrese el NOMBRE del DIRECTOR: ");
             gets (arr[i].director);
@@ -104,5 +169,9 @@ void mostrarPelisCargadas(stPelicula arrPeli[], int validos)
 
 }
 
+
 ///funcion para cargar una mas al final, si el usuario asi lo desea.
+
+
+
 
